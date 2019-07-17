@@ -2,48 +2,67 @@
  * Project 4 - OOP Game App
  * app.js */
 
-
-// const game = new Game();
-// game.phrases.forEach((phrase, index) => {
-// console.log(`Phrase ${index} - phrase: ${phrase.phrase}`);
-// });
-
-// const logPhrase = (phrase) => {
-//   console.log(`Phrase - phrase: `, phrase.phrase);
-//   };
-//   const game = new Game();
-//   logPhrase(game.getRandomPhrase());
-//   logPhrase(game.getRandomPhrase());
-//   logPhrase(game.getRandomPhrase());
-//   logPhrase(game.getRandomPhrase());
-//   logPhrase(game.getRandomPhrase());
-
-
-// const game = new Game();
-// game.getRandomPhrase().addPhraseToDisplay();
-
-// const game = new Game();
-// game.startGame();
-// console.log(`Active Phrase - phrase: ${game.activePhrase.phrase}`);
+//  NAME: Precious Chukwuemeka
 
 
 let game;
-
-$(document).mousedown((event)=>{
-event.preventDefault();
-
-})
+let keyCodes = [];
 
 
+//Function removes overlay.
 
-$("#btn__reset").click(() => {
+const resetDisplay = () => {
+  document.getElementById('overlay').style.display = 'none';
+};
+
+
+
+// Mark button function calls the handleInteraction method.
+
+const markButton = (evt) => {
+  game.handleInteraction(evt);
+};
+
+
+
+
+//Set up event handler on start button calls 'resetDisplay' and creates a new Game object.
+
+document.getElementById('btn__reset').addEventListener('click', () => {
+  resetDisplay();
+  keyCodes = [];
   game = new Game();
   game.startGame();
 });
 
 
-$(".key").click((e) => {
- let letter = $(e.target).text();
-  game.handleInteraction(letter);
+
+//set up listener on keydown. Keys inbetween 65&90 are letters, if keyCode array includes the letter then it means has already been pressed/clicked
+window.addEventListener('keydown', (event) => {
+  if (event.keyCode >= 65 && event.keyCode <= 90) {
+    if (!keyCodes.includes(event.key.toLowerCase())) {
+      markButton(event.key.toLowerCase());
+      keyCodes.push(event.key.toLowerCase());
+    }
+  }
 });
 
+
+
+
+//Event listener on each button, to disable that letter and handle interaction in game object, push the letter into keycode array.
+
+const buttons = document.getElementById('qwerty');
+buttons.addEventListener('click', (event) => {
+  if (event.target.className === 'key') {
+    markButton(event.target.textContent);
+    keyCodes.push(event.target.textContent);
+  }
+});
+
+
+
+//This event prevents the player from seeing the actual Text in the Game.
+document.addEventListener('mousedown', (event) => {
+  event.preventDefault();
+})

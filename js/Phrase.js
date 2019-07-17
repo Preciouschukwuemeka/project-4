@@ -1,39 +1,68 @@
-/* Treehouse FSJS Techdegree
- * Project 4 - OOP Game App
- * Phrase.js */
+// /* Treehouse FSJS Techdegree
+//  * Project 4 - OOP Game App
+//  * Phrase.js */
 
+
+//  NAME: Precious Chukwuemeka
+
+
+//Creating Phrase class //
 
 class Phrase {
   constructor(phrase) {
     this.phrase = phrase.toLowerCase();
   }
 
+  //Generating random phrase to the display.// 
+
   addPhraseToDisplay() {
-    let phraseArray = this.phrase.split('');
-    const phraseUl = document.getElementsByTagName('ul');
 
+    const ul = document.getElementById('phrase').firstElementChild;
 
-    for (var i = 0; i < phraseArray.length; i++) {
+    for (let i = 0; i < this.phrase.length; i++) {
+
       let li = document.createElement('li');
-      if (phraseArray[i] !== ' ') {
-        li.innerText = phraseArray[i];
-        li.className = `hide letter ${phraseArray[i]}`;
-        phraseUl[0].appendChild(li);
+      li.textContent = this.phrase[i];
+
+      if (li.textContent === ' ') {
+        li.classList.add('hide', 'space');
       } else {
-        li.innerText = `${phraseArray[i]} `;
-        li.className = `hide space`;
-        phraseUl[0].appendChild(li);
+        li.classList.add('hide', 'letter');
       }
+
+      ul.appendChild(li);
     }
   }
 
 
-  checkLetter(letter) {
-    return this.phrase.includes(letter);
+  /**  Method check the letter vs phrase[i], returns true/false.  **/
+
+  checkLetter(letterToCheck) {
+
+    let checkForMatch = 0;
+
+    for (let i = 0; i < this.phrase.length; i++) {
+      if (letterToCheck === this.phrase[i].toLowerCase()) {
+        checkForMatch++
+      }
+    }
+    if (checkForMatch > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
+
+  /** Show matched letter method: Adds show class and removes hide class **/
 
   showMatchedLetter(letter) {
-    $(".letter." + letter).removeClass('hide').addClass('show');
-  }
 
+    const lis = document.getElementById('phrase').firstElementChild.children;
+    for (let i = 0; i < lis.length; i++) {
+      if (lis[i].textContent.toLowerCase() === letter) {
+        lis[i].classList.add('show');
+        lis[i].classList.remove('hide');
+      }
+    }
+  }
 }
